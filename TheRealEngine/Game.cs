@@ -8,13 +8,15 @@ namespace TheRealEngine;
 
 public static class Game {
     public static ProjectRep Project { get; internal set; } = null!;
-    public static Node Scene { get; set; } = new();
-    public static Node Root { get; } = new() {
-        Children = [Scene]
-    };
+    public static NodeBase Scene { get; set; } = new();
+    public static NodeBase Root { get; } = new();
+
+    static Game() {
+        Root.AddChild(Scene);
+    }
 
     public static void ChangeScene(string sceneName) {
-        Root.Children.Remove(Scene);
+        Root.RemoveChild(Scene);
         
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Scenes", sceneName + ".json");
         if (!File.Exists(path)) {
@@ -23,7 +25,7 @@ public static class Game {
 
         NodeRep sceneNode = JsonConvert.DeserializeObject<NodeRep>(File.ReadAllText(path))!;
         Scene = sceneNode.ToNode();
-        Root.Children.Add(Scene);
+        Root.AddChild(Scene);
     }
 
     internal static void Init(ProjectRep project) {
@@ -42,17 +44,17 @@ public static class Game {
         }
     }
     
-    private static void Update(Node node, double delta) {
-        Node[] copy = node.Children.ToArray();
-        foreach (Node child in copy) {
+    private static void Update(INode node, double delta) {
+        INode[] copy = node.Children;
+        foreach (INode child in copy) {
             Update(child, delta);
         }
         node.Update(delta);
     }
 
-    private static void Tick(Node node, double delta) {
-        Node[] copy = node.Children.ToArray();
-        foreach (Node child in copy) {
+    private static void Tick(INode node, double delta) {
+        INode[] copy = node.Children;
+        foreach (INode child in copy) {
             Tick(child, delta);
         }
         node.Tick(delta);

@@ -6,12 +6,13 @@ namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class ConsoleRenderer : IRenderer {
     
-    public void Render(Node node) {
+    public void Render(INode node) {
+        Console.Clear();
         // Get self and all children
-        List<Node> allNodes = [ node ];
+        List<INode> allNodes = [ node ];
         allNodes.AddRange(node.GetAllChildren());
 
-        foreach (Node n in allNodes) {
+        foreach (INode n in allNodes) {
             if (n is not ConsoleCharacterNode charNode) {
                 continue;
             }

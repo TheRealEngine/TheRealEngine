@@ -1,6 +1,4 @@
 using System.Reflection;
-using System.Text.Json;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TheRealEngine.Nodes;
 
@@ -12,9 +10,9 @@ public class NodeRep {
     public NodeRep[] Children { get; set; }
     public Dictionary<string, JToken> Params { get; set; } = [];
 
-    public Node ToNode() {
+    public NodeBase ToNode() {
         Type t = GetNodeType();
-        Node node = (Node)Activator.CreateInstance(t)!;
+        NodeBase node = (NodeBase)Activator.CreateInstance(t)!;
         node.Name = Name;
 
         foreach (KeyValuePair<string, JToken> paramKp in Params) {
@@ -45,7 +43,7 @@ public class NodeRep {
         }
 
         foreach (NodeRep child in Children) {
-            node.Children.Add(child.ToNode());
+            node.AddChild(child.ToNode());
         }
 
         return node;
@@ -53,7 +51,7 @@ public class NodeRep {
 
     private Type GetNodeType() {
         if (Script == null) {
-            return typeof(Node);
+            return typeof(NodeBase);
         }
 
         return Game.GetType(Script);

@@ -3,7 +3,7 @@ using TheRealEngine.Nodes;
 namespace TheRealEngine.UniversalRendering;
 
 public interface IRenderer {
-    void Render(Node node);
+    void Render(INode node);
     
     void Init() { }
 }

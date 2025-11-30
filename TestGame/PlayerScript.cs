@@ -4,7 +4,7 @@ using TheRealEngine.Nodes;
 
 namespace TestGame;
 
-public class PlayerScript : Node {
+public class PlayerScript : NodeBase {
     private readonly Stopwatch _sw = Stopwatch.StartNew();
     
     public override void Update(double d) {
