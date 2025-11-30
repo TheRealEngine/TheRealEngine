@@ -1,0 +1,11 @@
+{
+  "script": null,
+  "name": "Game World 2",
+  "children": [
+    {
+      "name": "player",
+      "script": "TestGame.Player2Script",
+      "children": []
+    }
+  ]
+}

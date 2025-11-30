@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRealEngine", "TheRealEngine\TheRealEngine.csproj", "{BCFE4A5A-1E97-4516-AF93-3525DB45894F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGame", "TestGame\TestGame.csproj", "{75D5E3C7-03C9-47FE-884C-8AB4C0F7E9FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRealEngine.RenderApi", "TheRealEngine.RenderApi\TheRealEngine.RenderApi.csproj", "{6FEC43BF-D884-47A1-A9E6-0876522D86C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCFE4A5A-1E97-4516-AF93-3525DB45894F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCFE4A5A-1E97-4516-AF93-3525DB45894F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCFE4A5A-1E97-4516-AF93-3525DB45894F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCFE4A5A-1E97-4516-AF93-3525DB45894F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D5E3C7-03C9-47FE-884C-8AB4C0F7E9FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D5E3C7-03C9-47FE-884C-8AB4C0F7E9FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75D5E3C7-03C9-47FE-884C-8AB4C0F7E9FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75D5E3C7-03C9-47FE-884C-8AB4C0F7E9FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FEC43BF-D884-47A1-A9E6-0876522D86C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FEC43BF-D884-47A1-A9E6-0876522D86C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FEC43BF-D884-47A1-A9E6-0876522D86C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FEC43BF-D884-47A1-A9E6-0876522D86C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+{
+  "name": "Test Game Yay!",
+  "version": "1.0.0",
+  "description": "a cool game",
+  "default_scene": "main"
+}

@@ -1,0 +1,14 @@
+{
+  "script": null,
+  "name": "Game World",
+  "children": [
+    {
+      "name": "dot",
+      "script": "TestGame.Snek",
+      "children": [],
+      "params": {
+        "Character": "O"
+      }
+    }
+  ]
+}
