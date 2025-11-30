@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRealEngine.RenderApi", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheRealEngine.UniversalRendering", "TheRealEngine.UniversalRendering\TheRealEngine.UniversalRendering.csproj", "{6CC4831F-BD54-42BA-A986-E81A90CE733E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KrysRendering", "KrysRendering\KrysRendering.csproj", "{CFD2C671-FB5E-481C-968B-8A819702BBBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{6CC4831F-BD54-42BA-A986-E81A90CE733E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CC4831F-BD54-42BA-A986-E81A90CE733E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CC4831F-BD54-42BA-A986-E81A90CE733E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD2C671-FB5E-481C-968B-8A819702BBBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD2C671-FB5E-481C-968B-8A819702BBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD2C671-FB5E-481C-968B-8A819702BBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD2C671-FB5E-481C-968B-8A819702BBBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

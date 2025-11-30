@@ -2,18 +2,18 @@ namespace TheRealEngine.Nodes;
 
 public interface INode {
     INode[] Children { get; }
-    INode? Parent { get; internal set; }
+    INode? Parent { get; set; }
     string Name { get; set; }
 
     void Update(double delta) { }
     void Tick(double delta) { }
-    
+
     void AddChild(INode child);
     void RemoveChild(INode child);
 }
 
 public static class NodeExtensions {
-    
+
     /// <summary>
     /// Gets all children and children of children etc...
     /// </summary>
@@ -27,7 +27,7 @@ public static class NodeExtensions {
 
         return childs.ToArray();
     }
-    
+
     public static void Reparent(this INode self, INode newParent) {
         self.Parent?.RemoveChild(self);
         newParent.AddChild(self);

@@ -10,38 +10,40 @@ public class NodeRep {
     public NodeRep[] Children { get; set; }
     public Dictionary<string, JToken> Params { get; set; } = [];
 
-    public NodeBase ToNode() {
+    public INode ToNode() {
         Type t = GetNodeType();
-        NodeBase node = (NodeBase)Activator.CreateInstance(t)!;
-        node.Name = Name;
 
-        foreach (KeyValuePair<string, JToken> paramKp in Params) {
-            PropertyInfo prop = t.GetProperty(paramKp.Key)!;
+        // 1. Get the constructor parameters
+        ConstructorInfo ctor = t.GetConstructors().First();
+        ParameterInfo[] ctorParams = ctor.GetParameters();
+        object[] args = new object[ctorParams.Length];
 
-            if (prop.PropertyType != typeof(string) && prop.PropertyType != typeof(char) && paramKp.Value.Type == JTokenType.String) {
-                string refStr = paramKp.Value.ToObject<string>()!;
-                string[] parts = refStr.Split("::");
-                string type = parts[0];
-                string value = parts[1];
+        // 2. Match JSON Params to Constructor Arguments
+        for (int i = 0; i < ctorParams.Length; i++) {
+            ParameterInfo p = ctorParams[i];
 
-                switch (type) {
-                    case "new": {
-                        Type refType = Game.GetType(value);
-                        object refObj = Activator.CreateInstance(refType)!;
-                        prop.SetValue(node, refObj);
-                        break;
-                    }
-                    
-                    default:
-                        throw new Exception($"Unknown reference type: {type}");
-                }
-                
-                continue;
+            // Try find parameter in JSON (Case-insensitive to allow "Color" in JSON matching "color" in ctor)
+            string? key = Params.Keys.FirstOrDefault(k => string.Equals(k, p.Name, StringComparison.OrdinalIgnoreCase));
+
+            if (key != null) {
+                JToken token = Params[key];
+
+                // Handle "new::" syntax or standard conversion
+                args[i] = ConvertToken(token, p.ParameterType);
             }
-            
-            prop.SetValue(node, paramKp.Value.ToObject(prop.PropertyType));
+            else if (p.HasDefaultValue) {
+                args[i] = p.DefaultValue!;
+            }
+            else {
+                throw new Exception($"Missing required parameter '{p.Name}' for node '{Name}' ({t.Name})");
+            }
         }
 
+        // 3. Create Instance with args
+        INode node = (INode)Activator.CreateInstance(t, args)!;
+        node.Name = Name;
+
+        // 4. Add Children
         foreach (NodeRep child in Children) {
             node.AddChild(child.ToNode());
         }
@@ -49,9 +51,33 @@ public class NodeRep {
         return node;
     }
 
+    private object ConvertToken(JToken token, Type targetType) {
+        // Check for special string syntax if target isn't a string/char
+        if (targetType != typeof(string) && targetType != typeof(char) && token.Type == JTokenType.String) {
+            string refStr = token.ToObject<string>()!;
+            if (refStr.Contains("::")) {
+                string[] parts = refStr.Split("::");
+                string type = parts[0];
+                string value = parts[1];
+
+                switch (type) {
+                    case "new": {
+                        Type refType = Game.GetType(value);
+                        return Activator.CreateInstance(refType)!;
+                    }
+                    default:
+                        throw new Exception($"Unknown reference type: {type}");
+                }
+            }
+        }
+
+        // Standard conversion
+        return token.ToObject(targetType)!;
+    }
+
     private Type GetNodeType() {
         if (Script == null) {
-            return typeof(NodeBase);
+            return typeof(INode);
         }
 
         return Game.GetType(Script);

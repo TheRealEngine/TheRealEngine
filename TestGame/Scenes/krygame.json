@@ -1,0 +1,52 @@
+{
+  "script": "KrysRendering.KrysWindow",
+  "name": "Window",
+  "children": [
+    {
+      "name": "Background Color",
+      "script": "KrysRendering.Ops.ClearBackgroundOp",
+      "children": [],
+      "params": {
+        "color": "#3d3d3d"
+      }
+    },
+    {
+      "name": "Hello Text",
+      "script": "KrysRendering.Ops.DrawTextOp",
+      "children": [],
+      "params": {
+        "text": "Hello Raylib!",
+        "posX": 190,
+        "posY": 200,
+        "fontSize": 50,
+        "color": "#d4d4d4"
+      }
+    },
+    {
+      "name": "Line",
+      "script": "KrysRendering.Ops.DrawLineOp",
+      "children": [],
+      "params": {
+        "startPosX": 100,
+        "startPosY": 100,
+        "endPosX": 700,
+        "endPosY": 500,
+        "color": "#FF0000"
+      }
+    },
+    {
+      "name": "Mouse Circle",
+      "script": "KrysRendering.Shapes.MouseCircle",
+      "children": [],
+      "params": {
+        "radius": 16,
+        "color": "#ffffff"
+      }
+    }
+  ],
+  "params": {
+    "title": "Test Game Yay!",
+    "width": 800,
+    "height": 600
+  }
+}

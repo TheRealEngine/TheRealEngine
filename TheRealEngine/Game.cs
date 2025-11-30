@@ -8,8 +8,8 @@ namespace TheRealEngine;
 
 public static class Game {
     public static ProjectRep Project { get; internal set; } = null!;
-    public static NodeBase Scene { get; set; } = new();
-    public static NodeBase Root { get; } = new();
+    public static INode Scene { get; set; } = new NodeBase();
+    public static INode Root { get; } = new NodeBase();
 
     static Game() {
         Root.AddChild(Scene);
@@ -17,7 +17,7 @@ public static class Game {
 
     public static void ChangeScene(string sceneName) {
         Root.RemoveChild(Scene);
-        
+
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Scenes", sceneName + ".json");
         if (!File.Exists(path)) {
             throw new Exception($"Scene not found: {sceneName}");
@@ -30,20 +30,24 @@ public static class Game {
 
     internal static void Init(ProjectRep project) {
         Project = project;
-        
+
         ChangeScene(project.DefaultScene);
     }
 
     public static void Ticker() {
-        Stopwatch sw = Stopwatch.StartNew();
+        Stopwatch swu = Stopwatch.StartNew();
+        Stopwatch swt = Stopwatch.StartNew();
         while (true) {
-            Update(Root, sw.Elapsed.TotalSeconds);
-            Tick(Root, sw.Elapsed.TotalSeconds);
-            sw.Restart();
-            Thread.Sleep(50);
+            Update(Root, swu.Elapsed.TotalSeconds);
+            swu.Restart();
+            if (swt.Elapsed.TotalMilliseconds > 1000f / 180f)
+            {
+                Tick(Root, swt.Elapsed.TotalSeconds);
+                swt.Restart();
+            }
         }
     }
-    
+
     private static void Update(INode node, double delta) {
         INode[] copy = node.Children;
         foreach (INode child in copy) {
@@ -59,7 +63,7 @@ public static class Game {
         }
         node.Tick(delta);
     }
-    
+
     public static Type GetType(string typeName) {
         Type? builtinType = Type.GetType(typeName);
         if (builtinType != null) {
@@ -72,14 +76,14 @@ public static class Game {
         //         return assType;
         //     }
         // }
-        
+
         foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies()) {
             Type? assType = ass.GetType(typeName);
             if (assType != null) {
                 return assType;
             }
         }
-        
+
         throw new Exception("Type not found: " + typeName);
     }
 }
