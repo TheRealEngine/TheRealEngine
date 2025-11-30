@@ -7,8 +7,9 @@ namespace TheRealEngine;
 internal static class Program {
     
     public static void Main(string[] args) {
-        Assembly dll = Assembly.LoadFile(Path.Combine(Directory.GetCurrentDirectory(), "TestGame.dll"));
-
+        PluginLoadContext context = new(Path.Combine(Directory.GetCurrentDirectory(), "TestGame.dll"));
+        Assembly dll = context.LoadFromAssemblyPath(Path.Combine(Directory.GetCurrentDirectory(), "TestGame.dll"));
+        
         if (!File.Exists("project.json")) {
             throw new Exception("project.json file not found. Is this a project.");
         }

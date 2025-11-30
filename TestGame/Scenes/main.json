@@ -9,6 +9,11 @@
       "params": {
         "Character": "O"
       }
+    },
+    {
+      "name": "window",
+      "script": "TestGame.CoolWindowNode",
+      "children": []
     }
   ]
 }

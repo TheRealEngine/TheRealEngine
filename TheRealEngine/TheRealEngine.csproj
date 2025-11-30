@@ -10,8 +10,6 @@
     <ItemGroup>
       <PackageReference Include="GlmSharp" Version="0.9.8" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-      <PackageReference Include="Silk.NET.OpenGL" Version="2.22.0" />
-      <PackageReference Include="Silk.NET.Vulkan" Version="2.22.0" />
     </ItemGroup>
 
 </Project>
