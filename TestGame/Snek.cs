@@ -1,9 +1,12 @@
-using TheRealEngine.Nodes;
+using GlmSharp;
+using TheRealEngine.UniversalRendering.Nodes.Console;
 
 namespace TestGame;
 
 public class Snek : ConsoleCharacterNode {
-    public override void Update(double d) {
-        Pos = (Pos.X + 0.01, 5);
+    private const double Speed = 1.0;  // Characters per second
+    
+    public override void Tick(double delta) {
+        Transform.Position = new dvec2(Transform.Position.x + Speed * delta, 5);
     }
 }

@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TheRealEngine.RenderApi\TheRealEngine.RenderApi.csproj" />
+      <ProjectReference Include="..\TheRealEngine.UniversalRendering\TheRealEngine.UniversalRendering.csproj" />
       <ProjectReference Include="..\TheRealEngine\TheRealEngine.csproj" />
     </ItemGroup>
 

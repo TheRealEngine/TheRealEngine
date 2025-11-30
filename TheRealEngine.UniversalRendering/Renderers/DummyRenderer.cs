@@ -1,6 +1,6 @@
 using TheRealEngine.Nodes;
 
-namespace TheRealEngine;
+namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class DummyRenderer : IRenderer {
     

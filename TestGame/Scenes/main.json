@@ -1,5 +1,5 @@
 {
-  "script": null,
+  "script": "TheRealEngine.UniversalRendering.Nodes.Generic.WindowNode",
   "name": "Game World",
   "children": [
     {
@@ -9,11 +9,9 @@
       "params": {
         "Character": "O"
       }
-    },
-    {
-      "name": "window",
-      "script": "TestGame.CoolWindowNode",
-      "children": []
     }
-  ]
+  ],
+  "params": {
+    "Renderer": "new::TheRealEngine.UniversalRendering.Renderers.ConsoleRenderer"
+  }
 }

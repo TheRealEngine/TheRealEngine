@@ -4,7 +4,8 @@ public class Node {
     public virtual List<Node> Children { get; init; } = [];
     public string Name { get; set; }
     
-    public virtual void Update(double delta) {}
+    public virtual void Update(double delta) { }
+    public virtual void Tick(double delta) { }
 
     /// <summary>
     /// Gets all children and children of children etc...

@@ -8,7 +8,6 @@ namespace TheRealEngine;
 
 public static class Game {
     public static ProjectRep Project { get; internal set; } = null!;
-    public static Assembly ProjectAssembly { get; internal set; } = null!;
     public static Node Scene { get; set; } = new();
     public static Node Root { get; } = new() {
         Children = [Scene]
@@ -23,13 +22,12 @@ public static class Game {
         }
 
         NodeRep sceneNode = JsonConvert.DeserializeObject<NodeRep>(File.ReadAllText(path))!;
-        Scene = sceneNode.ToNode(ProjectAssembly);
+        Scene = sceneNode.ToNode();
         Root.Children.Add(Scene);
     }
 
-    internal static void Init(ProjectRep project, Assembly assembly) {
+    internal static void Init(ProjectRep project) {
         Project = project;
-        ProjectAssembly = assembly;
         
         ChangeScene(project.DefaultScene);
     }
@@ -37,18 +35,49 @@ public static class Game {
     public static void Ticker() {
         Stopwatch sw = Stopwatch.StartNew();
         while (true) {
+            Update(Root, sw.Elapsed.TotalSeconds);
             Tick(Root, sw.Elapsed.TotalSeconds);
             sw.Restart();
             Thread.Sleep(50);
-            Rendering.Render(Root);
         }
     }
     
+    private static void Update(Node node, double delta) {
+        Node[] copy = node.Children.ToArray();
+        foreach (Node child in copy) {
+            Update(child, delta);
+        }
+        node.Update(delta);
+    }
+
     private static void Tick(Node node, double delta) {
         Node[] copy = node.Children.ToArray();
         foreach (Node child in copy) {
             Tick(child, delta);
         }
-        node.Update(delta);
+        node.Tick(delta);
+    }
+    
+    public static Type GetType(string typeName) {
+        Type? builtinType = Type.GetType(typeName);
+        if (builtinType != null) {
+            return builtinType;
+        }
+
+        // foreach (Assembly ass in ProjectAssemblies) {
+        //     Type? assType = ass.GetType(typeName);
+        //     if (assType != null) {
+        //         return assType;
+        //     }
+        // }
+        
+        foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies()) {
+            Type? assType = ass.GetType(typeName);
+            if (assType != null) {
+                return assType;
+            }
+        }
+        
+        throw new Exception("Type not found: " + typeName);
     }
 }

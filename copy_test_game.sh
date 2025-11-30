@@ -1,5 +1,8 @@
 #!/bin/bash
-cp TestGame/bin/Debug/net8.0/main.json TheRealEngine/bin/Debug/net8.0/Scenes/main.json
-cp TestGame/bin/Debug/net8.0/scene2.json TheRealEngine/bin/Debug/net8.0/Scenes/scene2.json
-cp TestGame/bin/Debug/net8.0/project.json TheRealEngine/bin/Debug/net8.0/project.json
-cp TestGame/bin/Debug/net8.0/TestGame.dll TheRealEngine/bin/Debug/net8.0/TestGame.dll
+dotnet build TheRealEngine/TheRealEngine.csproj
+dotnet publish TestGame/TestGame.csproj
+mkdir -p TheRealEngine/bin/Debug/net8.0/Scenes/
+mkdir -p TheRealEngine/bin/Debug/net8.0/Assemblies/
+cp TestGame/bin/Release/net8.0/publish/Scenes/*.json TheRealEngine/bin/Debug/net8.0/Scenes/
+cp TestGame/bin/Release/net8.0/publish/project.json TheRealEngine/bin/Debug/net8.0/project.json
+cp TestGame/bin/Release/net8.0/publish/*.dll TheRealEngine/bin/Debug/net8.0/Assemblies/

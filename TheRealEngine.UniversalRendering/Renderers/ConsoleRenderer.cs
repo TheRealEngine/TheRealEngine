@@ -1,6 +1,8 @@
+using GlmSharp;
 using TheRealEngine.Nodes;
+using TheRealEngine.UniversalRendering.Nodes.Console;
 
-namespace TheRealEngine;
+namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class ConsoleRenderer : IRenderer {
     
@@ -14,11 +16,11 @@ public class ConsoleRenderer : IRenderer {
                 continue;
             }
             
-            var (x, y) = charNode.SnappedPos;
+            ivec2 sp = charNode.SnappedPos;
 
             // Set cursor position (beware: validate console bounds in production)
             try {
-                Console.SetCursorPosition(x, y);
+                Console.SetCursorPosition(sp.x, sp.y);
                 Console.Write(charNode.Character);
             }
             catch (ArgumentOutOfRangeException) {

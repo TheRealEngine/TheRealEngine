@@ -1,6 +1,6 @@
 using TheRealEngine.Nodes;
 
-namespace TheRealEngine;
+namespace TheRealEngine.UniversalRendering;
 
 public interface IRenderer {
     void Render(Node node);
