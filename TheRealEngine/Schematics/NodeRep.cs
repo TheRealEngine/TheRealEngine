@@ -6,9 +6,9 @@ using TheRealEngine.Nodes;
 namespace TheRealEngine.Schematics;
 
 public class NodeRep {
-    public string Name { get; set; }
+    public string Name { get; set; } = $"Node-{Random.Shared.Next()}";
     public string? Script { get; set; }
-    public NodeRep[] Children { get; set; }
+    public NodeRep[] Children { get; set; } = [];
     public Dictionary<string, JToken> Params { get; set; } = [];
 
     public INode ToNode() {

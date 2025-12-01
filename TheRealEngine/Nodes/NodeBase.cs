@@ -18,8 +18,10 @@ public class NodeBase : INode {
         
         _children.Add(child);
         child.Parent = this;
-        
-        child.Ready();
+
+        if (this.IsInTree()) {
+            child.CallOnTree(n => n.Ready());
+        }
     }
 
     public void RemoveChild(INode child) {
@@ -28,6 +30,6 @@ public class NodeBase : INode {
         }
         
         child.Parent = null;
-        child.Leave();
+        child.CallOnTree(n => n.Leave());
     }
 }

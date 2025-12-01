@@ -45,6 +45,12 @@ internal static class Program {
         
         Engine.GetEngineLogger().LogInformation("Starting project: {name} v{version}", project.Name, project.Version);
         Game.Init(project);
+
+        Console.CancelKeyPress += (_, cargs) => {
+            cargs.Cancel = true;
+            Engine.GetEngineLogger().LogInformation("Shutdown requested (Ctrl+C)");
+            Engine.Quit();
+        };
         
         Engine.GetEngineLogger().LogInformation("Entering main loop");
         Game.Ticker();
