@@ -1,0 +1,26 @@
+{
+  "script": "TheRealEngine.RenderApi.WindowOpenGL",
+  "name": "Game World",
+  "children": [
+    {
+      "name": "texture node",
+      "script": "TheRealEngine.RenderApi.Texture2D",
+      "children": [],
+      "params": {
+        "Texture": "aXR5PTgw.png",
+        "Position": [0.5, 0.0],
+        "Scale": [0.25, 0.25]
+      }
+    },
+    {
+      "name": "texture node 2",
+      "script": "TheRealEngine.RenderApi.Texture2D",
+      "children": [],
+      "params": {
+        "Texture": "thing.png",
+        "Position": [-0.5, 0.0],
+        "Scale": [0.25, 0.25]
+      }
+    }
+  ]
+}
