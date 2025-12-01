@@ -71,33 +71,29 @@ public static class Game {
     }
 
     private static void Update(INode node, double delta) {
-        foreach (INode child in node.Children) {
-            Update(child, delta);
-        }
-        
-        Engine.GetLogger("Ticker").LogTrace("Updating child node {node}", node.Name);
-        try {
-            node.Update(delta);
-            Engine.GetLogger("Ticker").LogTrace("Updated child node {node}", node.Name);
-        }
-        catch (Exception e) {
-            Engine.GetLogger("Ticker").LogError(e, "Error during Update of node {node}", node.Name);
-        }
+        node.CallOnTree(n => {
+            Engine.GetLogger("Ticker").LogTrace("Updating child node {node}", n.Name);
+            try {
+                n.Update(delta);
+                Engine.GetLogger("Ticker").LogTrace("Updated child node {node}", n.Name);
+            }
+            catch (Exception e) {
+                Engine.GetLogger("Ticker").LogError(e, "Error during Update of node {node}", n.Name);
+            }
+        });
     }
 
     private static void Tick(INode node, double delta) {
-        foreach (INode child in node.Children) {
-            Tick(child, delta);
-        }
-        
-        Engine.GetLogger("Ticker").LogTrace("Ticking child node {node}", node.Name);
-        try {
-            node.Tick(delta);
-            Engine.GetLogger("Ticker").LogTrace("Ticked child node {node}", node.Name);
-        }
-        catch (Exception e) {
-            Engine.GetLogger("Ticker").LogError(e, "Error during Tick of node {node}", node.Name);
-        }
+        node.CallOnTree(n => {
+            Engine.GetLogger("Ticker").LogTrace("Ticking child node {node}", n.Name);
+            try {
+                n.Tick(delta);
+                Engine.GetLogger("Ticker").LogTrace("Ticked child node {node}", n.Name);
+            }
+            catch (Exception e) {
+                Engine.GetLogger("Ticker").LogError(e, "Error during Tick of node {node}", n.Name);
+            }
+        });
     }
 
     public static Type GetType(string typeName) {

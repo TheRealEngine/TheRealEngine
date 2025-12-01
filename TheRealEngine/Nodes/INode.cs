@@ -62,13 +62,18 @@ public static class NodeExtensions {
     /// <param name="includeSelf">Whether to include the current node.</param>
     /// <returns>An enumerator for the tree.</returns>
     public static IEnumerable<INode> GetTreeEnumerator(this INode self, bool includeSelf = true) {
-        if (includeSelf) {
-            yield return self;
-        }
-        foreach (INode child in self.Children) {
-            foreach (INode descendant in child.GetTreeEnumerator()) {
-                yield return descendant;
+        List<INode> open = includeSelf ? [self] : self.Children.ToList();
+        List<INode> newOpen = [];
+
+        while (open.Count > 0) {
+            foreach (INode node in open) {
+                newOpen.AddRange(node.Children);
+                yield return node;
             }
+            
+            open.Clear();
+            open.AddRange(newOpen);
+            newOpen.Clear();
         }
     }
 
