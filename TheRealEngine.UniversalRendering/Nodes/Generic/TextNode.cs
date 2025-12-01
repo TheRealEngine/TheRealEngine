@@ -7,4 +7,5 @@ public class TextNode : Node2D {
     public string Text { get; set; } = "Hello World!";
     public Color FontColour { get; set; } = Color.Black;
     public int FontSize { get; set; } = 16;
+    public int FontSpacing { get; set; } = 7;
 }

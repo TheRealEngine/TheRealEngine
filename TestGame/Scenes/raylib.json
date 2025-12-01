@@ -14,13 +14,14 @@
     },
     {
       "name": "sometext",
-      "script": "TheRealEngine.UniversalRendering.Nodes.Generic.TextNode",
+      "script": "TestGame.SpinText",
       "children": [],
       "params": {
         "Text": "Hello There Gamers!!!!",
-        "Position": [200,200],
+        "Position": [200,100],
         "FontSize": 48,
-        "FontColour": "#FF0000"
+        "FontColour": "#FF6495ED",
+        "Rotation": 0.8
       }
     }
   ],

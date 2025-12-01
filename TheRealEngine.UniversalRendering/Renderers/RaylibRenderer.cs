@@ -49,14 +49,12 @@ public class RaylibRenderer : IRenderer {
                         texture.Width, texture.Height
                     );
 
-                    Vector2 origin = new(0, 0);
-
                     Raylib.DrawTexturePro(
                         texture,
                         sourceRectangle,
                         destRectangle,
-                        origin,
-                        (float)sprite.Rotation,
+                        Vector2.Zero, 
+                        (float)glm.Degrees(sprite.Rotation),
                         Color.White
                     );
                     break;
@@ -65,8 +63,9 @@ public class RaylibRenderer : IRenderer {
                 case TextNode text: {
                     Font font = Raylib.GetFontDefault();
                     
-                    // Raylib.DrawTextPro(font, text.Text, text.);.DrawText(text.Text, (int)text.Position.x, (int)text.Position.y, 
-                    //     text.FontSize, ToRaylibColor(text.FontColour));
+                    Raylib.DrawTextPro(font, text.Text, new Vector2((float)text.Position.x, (float)text.Position.y), 
+                        Vector2.Zero, (float)glm.Degrees(text.Transform.Rotation), text.FontSize, text.FontSpacing, 
+                        ToRaylibColor(text.FontColour));
                     break;
                 }
             }

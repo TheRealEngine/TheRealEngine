@@ -11,6 +11,7 @@ public static class Game {
     public static ProjectRep Project { get; internal set; } = null!;
     public static INode Scene { get; set; } = new NodeBase();
     public static INode Root { get; } = new NodeBase();
+    public static double TimeBetweenTicks => 1d / Project.Tps;
 
     static Game() {
         Root.AddChild(Scene);
@@ -40,15 +41,17 @@ public static class Game {
         Stopwatch swu = Stopwatch.StartNew();
         Stopwatch swt = Stopwatch.StartNew();
         while (true) {
-            Engine.GetLogger("Ticker").LogDebug("Update");
-            Update(Root, swu.Elapsed.TotalSeconds);
-            swu.Restart();
-            
-            if (swt.Elapsed.TotalMilliseconds > 1000f / 180f) {
+            // Tick if enough time has passed
+            if (swt.Elapsed.TotalSeconds >= TimeBetweenTicks) {
                 Engine.GetLogger("Ticker").LogDebug("Tick");
-                Tick(Root, swt.Elapsed.TotalSeconds);
                 swt.Restart();
+                Tick(Root, TimeBetweenTicks);
             }
+            
+            Engine.GetLogger("Ticker").LogDebug("Update");
+            double delta = swu.Elapsed.TotalSeconds;
+            swu.Restart();
+            Update(Root, delta);
         }
     }
 
