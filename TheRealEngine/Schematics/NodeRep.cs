@@ -19,6 +19,7 @@ public class NodeRep {
         object[] args = new object[ctorParams.Length];
 
         // 2. Match JSON Params to Constructor Arguments
+        HashSet<string> usedKeys = [];
         for (int i = 0; i < ctorParams.Length; i++) {
             ParameterInfo p = ctorParams[i];
 
@@ -30,6 +31,8 @@ public class NodeRep {
 
                 // Handle "new::" syntax or standard conversion
                 args[i] = ConvertToken(token, p.ParameterType);
+                
+                usedKeys.Add(key);
             }
             else if (p.HasDefaultValue) {
                 args[i] = p.DefaultValue!;
@@ -42,6 +45,16 @@ public class NodeRep {
         // 3. Create Instance with args
         INode node = (INode)Activator.CreateInstance(t, args)!;
         node.Name = Name;
+
+        foreach (KeyValuePair<string, JToken> paramKp in Params) {
+            if (usedKeys.Contains(paramKp.Key)) {
+                continue;  // Ignore values used in constructor
+            }
+            
+            PropertyInfo prop = t.GetProperty(paramKp.Key)!;
+            object value = ConvertToken(paramKp.Value, prop.PropertyType);
+            prop.SetValue(node, value);
+        }
 
         // 4. Add Children
         foreach (NodeRep child in Children) {

@@ -1,0 +1,18 @@
+{
+  "script": "TheRealEngine.UniversalRendering.Nodes.Generic.WindowNode",
+  "name": "Game World",
+  "children": [
+    {
+      "name": "sprite",
+      "script": "TheRealEngine.UniversalRendering.Nodes.Generic.SpriteNode",
+      "children": [],
+      "params": {
+        "TexturePath": "thing.png"
+      }
+    }
+  ],
+  "params": {
+    "Renderer": "new::TheRealEngine.UniversalRendering.Renderers.RaylibRenderer",
+    "Title": "Test Game Yay!"
+  }
+}

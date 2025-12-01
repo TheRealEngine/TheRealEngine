@@ -27,6 +27,15 @@ public static class NodeExtensions {
 
         return childs.ToArray();
     }
+    
+    public static IEnumerable<INode> GetTreeEnumerator(this INode self) {
+        yield return self;
+        foreach (INode child in self.Children) {
+            foreach (INode descendant in child.GetTreeEnumerator()) {
+                yield return descendant;
+            }
+        }
+    }
 
     public static void Reparent(this INode self, INode newParent) {
         self.Parent?.RemoveChild(self);

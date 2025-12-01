@@ -1,11 +1,13 @@
 using GlmSharp;
 using TheRealEngine.Nodes;
 using TheRealEngine.UniversalRendering.Nodes.Console;
+using TheRealEngine.UniversalRendering.Nodes.Generic;
 
 namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class ConsoleRenderer : IRenderer {
-    
+    public WindowNode Window { get; set; }
+
     public void Render(INode node) {
         Console.Clear();
         // Get self and all children
