@@ -11,7 +11,7 @@ namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class RaylibRenderer : IRenderer {
     public WindowNode Window { get; set; }
-    private Dictionary<object, Texture2D> _loadedTextures = new();
+    private readonly Dictionary<object, Texture2D> _loadedTextures = new();
 
     public void Init() {
         unsafe {
@@ -20,7 +20,14 @@ public class RaylibRenderer : IRenderer {
         }
         Raylib.InitWindow(Window.Width, Window.Height, Window.Title);
     }
-    
+
+    public void Stop() {
+        foreach (Texture2D texture in _loadedTextures.Values) {
+            Raylib.UnloadTexture(texture);
+        }
+        Raylib.CloseWindow();
+    }
+
     public void Render(INode root) {
         if (Raylib.WindowShouldClose()) {
             // close window

@@ -9,6 +9,7 @@ public class NodeBase : INode {
     public virtual void Update(double delta) { }
     public virtual void Tick(double delta) { }
     public virtual void Ready() { }
+    public virtual void Leave() { }
     
     public void AddChild(INode child) {
         if (child.Parent != null) {
@@ -17,6 +18,8 @@ public class NodeBase : INode {
         
         _children.Add(child);
         child.Parent = this;
+        
+        child.Ready();
     }
 
     public void RemoveChild(INode child) {
@@ -25,5 +28,6 @@ public class NodeBase : INode {
         }
         
         child.Parent = null;
+        child.Leave();
     }
 }

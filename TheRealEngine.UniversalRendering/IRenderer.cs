@@ -9,4 +9,5 @@ public interface IRenderer {
     void Render(INode node);
     
     void Init() { }
+    void Stop() { }
 }

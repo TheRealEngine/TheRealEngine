@@ -12,9 +12,10 @@ public static class Game {
     public static INode Scene { get; set; } = new NodeBase();
     public static INode Root { get; } = new NodeBase();
     public static double TimeBetweenTicks => 1d / Project.Tps;
+    internal static CancellationTokenSource TickerTokenSource { get; } = new();
 
     static Game() {
-        Root.AddChild(Scene);
+        Root.AddChild(Scene);  // Make there always a scene loaded (though empty)
     }
 
     public static void ChangeScene(string sceneName) {
@@ -40,7 +41,7 @@ public static class Game {
         Engine.GetLogger("Ticker").LogDebug("Ticker entrypoint");
         Stopwatch swu = Stopwatch.StartNew();
         Stopwatch swt = Stopwatch.StartNew();
-        while (true) {
+        while (!TickerTokenSource.IsCancellationRequested) {
             // Tick if enough time has passed
             if (swt.Elapsed.TotalSeconds >= TimeBetweenTicks) {
                 Engine.GetLogger("Ticker").LogDebug("Tick");

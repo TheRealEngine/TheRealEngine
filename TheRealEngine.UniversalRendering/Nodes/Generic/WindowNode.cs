@@ -17,6 +17,10 @@ public class WindowNode : NodeBase {
         Renderer.Init();
     }
 
+    public override void Leave() {
+        Renderer.Stop();
+    }
+
     public override void Update(double delta) {
         Engine.GetLogger<WindowNode>().LogTrace("Rendering WindowNode {Title}", Title);
         Renderer.Render(this);

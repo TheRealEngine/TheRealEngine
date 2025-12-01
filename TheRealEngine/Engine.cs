@@ -21,4 +21,8 @@ public static class Engine {
     internal static ILogger GetEngineLogger() {
         return GetLogger("Core");
     }
+
+    public static void Quit() {
+        Game.TickerTokenSource.Cancel();
+    }
 }

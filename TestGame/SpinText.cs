@@ -1,3 +1,4 @@
+using TheRealEngine;
 using TheRealEngine.UniversalRendering.Nodes.Generic;
 
 namespace TestGame;
@@ -7,5 +8,10 @@ public class SpinText : TextNode {
     
     public override void Tick(double delta) {
         Rotation += RotationSpeed * delta * 2.0 * Math.PI;
+
+        if (Rotation > Math.PI * 10) {
+            // Engine.Quit();
+            Game.ChangeScene("krygame");
+        }
     }
 }

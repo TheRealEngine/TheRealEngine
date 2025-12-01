@@ -48,7 +48,9 @@ internal static class Program {
         
         Engine.GetEngineLogger().LogInformation("Entering main loop");
         Game.Ticker();
-
+        
+        Engine.GetEngineLogger().LogInformation("Exited cleanly");
+        Engine.GetEngineLogger().LogInformation("Good bye!");
         return 0;
     }
 }

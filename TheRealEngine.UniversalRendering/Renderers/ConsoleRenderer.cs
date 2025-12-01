@@ -9,12 +9,8 @@ public class ConsoleRenderer : IRenderer {
     public WindowNode Window { get; set; }
 
     public void Render(INode node) {
-        Console.Clear();
-        // Get self and all children
-        List<INode> allNodes = [ node ];
-        allNodes.AddRange(node.GetAllChildren());
-
-        foreach (INode n in allNodes) {
+        
+        foreach (INode n in node.GetTreeEnumerator()) {
             if (n is not ConsoleCharacterNode charNode) {
                 continue;
             }
