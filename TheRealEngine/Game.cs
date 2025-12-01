@@ -8,6 +8,8 @@ using TheRealEngine.Schematics;
 namespace TheRealEngine;
 
 public static class Game {
+    private const string SceneFileExtension = "rscene";
+    
     public static ProjectRep Project { get; internal set; } = null!;
     public static INode Scene { get; set; } = new NodeBase();
     public static INode Root { get; } = new NodeBase();
@@ -17,17 +19,29 @@ public static class Game {
     static Game() {
         Root.AddChild(Scene);  // Make there always a scene loaded (though empty)
     }
+    
+    private static string GetScenePath(string sceneName) {
+        string explicitPath = Path.Combine(Directory.GetCurrentDirectory(), sceneName);
+        if (File.Exists(explicitPath)) {
+            return explicitPath;
+        }
+        
+        string implicitPath = Path.Combine(Directory.GetCurrentDirectory(), Project.MainScenesFolder, $"{sceneName}.{SceneFileExtension}");
+        if (File.Exists(implicitPath)) {
+            return implicitPath;
+        }
+        
+        throw new Exception($"Scene not found: {sceneName}.{SceneFileExtension}");
+    }
+    
+    public static INode LoadScene(string sceneName) {
+        NodeRep sceneNode = JsonConvert.DeserializeObject<NodeRep>(File.ReadAllText(GetScenePath(sceneName)))!;
+        return sceneNode.ToNode();
+    }
 
     public static void ChangeScene(string sceneName) {
         Root.RemoveChild(Scene);
-
-        string path = Path.Combine(Directory.GetCurrentDirectory(), "Scenes", sceneName + ".json");
-        if (!File.Exists(path)) {
-            throw new Exception($"Scene not found: {sceneName}");
-        }
-
-        NodeRep sceneNode = JsonConvert.DeserializeObject<NodeRep>(File.ReadAllText(path))!;
-        Scene = sceneNode.ToNode();
+        Scene = LoadScene(sceneName);
         Root.AddChild(Scene);
     }
 
@@ -91,13 +105,6 @@ public static class Game {
         if (builtinType != null) {
             return builtinType;
         }
-
-        // foreach (Assembly ass in ProjectAssemblies) {
-        //     Type? assType = ass.GetType(typeName);
-        //     if (assType != null) {
-        //         return assType;
-        //     }
-        // }
 
         foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies()) {
             Type? assType = ass.GetType(typeName);

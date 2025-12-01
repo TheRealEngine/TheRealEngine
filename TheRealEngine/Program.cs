@@ -43,6 +43,8 @@ internal static class Program {
             throw new Exception("project.json file not found. Is this a project.");
         }
         
+        Directory.SetCurrentDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Assets"));
+        
         Engine.GetEngineLogger().LogInformation("Starting project: {name} v{version}", project.Name, project.Version);
         Game.Init(project);
 

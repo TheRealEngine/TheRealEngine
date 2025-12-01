@@ -8,10 +8,16 @@ namespace TheRealEngine.Schematics;
 public class NodeRep {
     public string Name { get; set; } = $"Node-{Random.Shared.Next()}";
     public string? Script { get; set; }
+    public string? Reference { get; set; }  // reference to another node file
     public NodeRep[] Children { get; set; } = [];
     public Dictionary<string, JToken> Params { get; set; } = [];
 
     public INode ToNode() {
+        // If Reference is set, load that scene instead
+        if (Reference != null) {
+            return Game.LoadScene(Reference);
+        }
+        
         Type t = GetNodeType();
 
         // 1. Get the constructor parameters
@@ -83,6 +89,16 @@ public class NodeRep {
                         Type refType = Game.GetType(value);
                         return Activator.CreateInstance(refType)!;
                     }
+
+                    case "scene": {
+                        if (!targetType.IsAssignableTo(typeof(INode))) {
+                            throw new Exception($"Cannot reference scene node as type '{targetType.Name}'");
+                        }
+
+                        INode node = Game.LoadScene(value);
+                        return node;
+                    }
+                    
                     default:
                         throw new Exception($"Unknown reference type: {type}");
                 }

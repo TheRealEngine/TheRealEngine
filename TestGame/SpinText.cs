@@ -10,8 +10,8 @@ public class SpinText : TextNode {
         Rotation += RotationSpeed * delta * 2.0 * Math.PI;
 
         if (Rotation > Math.PI * 10) {
-            // Engine.Quit();
-            Game.ChangeScene("krygame");
+            Engine.Quit();
+            // Game.ChangeScene("krygame");
         }
     }
 }

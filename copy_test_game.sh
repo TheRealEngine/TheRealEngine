@@ -9,23 +9,26 @@ echo Cleaning previous builds...
 rm -rf $engine_build_dir
 rm -rf $game_output_dir
 
-echo Building projects...
+echo "Building projects..."
 dotnet build TheRealEngine/TheRealEngine.csproj
 dotnet publish TestGame/TestGame.csproj
 
-echo Setting up engine build directory...
+echo "Setting up engine build directory."
 mkdir -p $engine_build_dir/Scenes/
+echo -n "."
 mkdir -p $engine_build_dir/Assemblies/native
+echo "."
 
-echo Copying game files to engine build directory...
-cp $game_output_dir/Scenes/*.json $engine_build_dir/Scenes/
+echo -n "Copying game files to engine build directory"
 cp $game_output_dir/project.json $engine_build_dir/project.json
+echo -n "."
 cp $game_output_dir/*.dll $engine_build_dir/Assemblies/
+echo -n "."
+cp -r TestGame/Assets $engine_build_dir/Assets
+echo "."
 
 echo Copying native runtimes...
 natives_dir="$game_output_dir/runtimes/$platform/native"
 [ -d "$natives_dir" ] && cp $natives_dir/* $engine_build_dir/Assemblies/ || true
 
-echo Copying game assets...
-cp -r TestGame/Assets $engine_build_dir/Assets
 

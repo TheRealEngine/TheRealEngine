@@ -25,6 +25,9 @@ public class ProjectRep {
     [JsonProperty("log_file")]
     public string? LogFile { get; set; } = null;
     
+    [JsonProperty("main_scenes_folder")]
+    public string MainScenesFolder { get; set; } = "Scenes";
+    
     public LogLevel GetLogLevel() {
         return LogLevel.ToLower() switch {
             "trace" => Microsoft.Extensions.Logging.LogLevel.Trace,
