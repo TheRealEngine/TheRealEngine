@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using TheRealEngine.Nodes;
 using TheRealEngine.Schematics;
@@ -35,13 +36,16 @@ public static class Game {
     }
 
     public static void Ticker() {
+        Engine.GetLogger("Ticker").LogDebug("Ticker entrypoint");
         Stopwatch swu = Stopwatch.StartNew();
         Stopwatch swt = Stopwatch.StartNew();
         while (true) {
+            Engine.GetLogger("Ticker").LogDebug("Update");
             Update(Root, swu.Elapsed.TotalSeconds);
             swu.Restart();
-            if (swt.Elapsed.TotalMilliseconds > 1000f / 180f)
-            {
+            
+            if (swt.Elapsed.TotalMilliseconds > 1000f / 180f) {
+                Engine.GetLogger("Ticker").LogDebug("Tick");
                 Tick(Root, swt.Elapsed.TotalSeconds);
                 swt.Restart();
             }
@@ -49,19 +53,33 @@ public static class Game {
     }
 
     private static void Update(INode node, double delta) {
-        INode[] copy = node.Children;
-        foreach (INode child in copy) {
+        foreach (INode child in node.Children) {
             Update(child, delta);
         }
-        node.Update(delta);
+        
+        Engine.GetLogger("Ticker").LogTrace("Updating child node {node}", node.Name);
+        try {
+            node.Update(delta);
+            Engine.GetLogger("Ticker").LogTrace("Updated child node {node}", node.Name);
+        }
+        catch (Exception e) {
+            Engine.GetLogger("Ticker").LogError(e, "Error during Update of node {node}", node.Name);
+        }
     }
 
     private static void Tick(INode node, double delta) {
-        INode[] copy = node.Children;
-        foreach (INode child in copy) {
+        foreach (INode child in node.Children) {
             Tick(child, delta);
         }
-        node.Tick(delta);
+        
+        Engine.GetLogger("Ticker").LogTrace("Ticking child node {node}", node.Name);
+        try {
+            node.Tick(delta);
+            Engine.GetLogger("Ticker").LogTrace("Ticked child node {node}", node.Name);
+        }
+        catch (Exception e) {
+            Engine.GetLogger("Ticker").LogError(e, "Error during Tick of node {node}", node.Name);
+        }
     }
 
     public static Type GetType(string typeName) {

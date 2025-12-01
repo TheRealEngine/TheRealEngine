@@ -7,7 +7,7 @@
       "script": "TheRealEngine.UniversalRendering.Nodes.Generic.SpriteNode",
       "children": [],
       "params": {
-        "TexturePath": "thing.png"
+        "TexturePath": "Assets/thing.png"
       }
     }
   ],

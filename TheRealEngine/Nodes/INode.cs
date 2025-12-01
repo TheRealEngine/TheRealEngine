@@ -7,6 +7,7 @@ public interface INode {
 
     void Update(double delta) { }
     void Tick(double delta) { }
+    void Ready() { }
 
     void AddChild(INode child);
     void RemoveChild(INode child);

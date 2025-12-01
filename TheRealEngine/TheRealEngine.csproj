@@ -9,6 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="GlmSharp" Version="0.9.8" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     </ItemGroup>
 

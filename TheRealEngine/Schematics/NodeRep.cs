@@ -60,6 +60,9 @@ public class NodeRep {
         foreach (NodeRep child in Children) {
             node.AddChild(child.ToNode());
         }
+        
+        // Node is fully constructed
+        node.Ready();
 
         return node;
     }

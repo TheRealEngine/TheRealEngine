@@ -8,6 +8,7 @@ public class NodeBase : INode {
     
     public virtual void Update(double delta) { }
     public virtual void Tick(double delta) { }
+    public virtual void Ready() { }
     
     public void AddChild(INode child) {
         if (child.Parent != null) {

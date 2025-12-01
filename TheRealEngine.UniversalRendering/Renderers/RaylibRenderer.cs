@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 using Raylib_cs;
 using TheRealEngine.Nodes;
 using TheRealEngine.UniversalRendering.Nodes.Generic;
@@ -8,6 +11,10 @@ public class RaylibRenderer : IRenderer {
     public WindowNode Window { get; set; }
 
     public void Init() {
+        unsafe {
+            delegate* unmanaged[Cdecl]<int, sbyte*, sbyte*, void> ptr = &MyLogCallback;
+            Raylib.SetTraceLogCallback(ptr);
+        }
         Raylib.InitWindow(Window.Width, Window.Height, Window.Title);
     }
     
@@ -32,5 +39,47 @@ public class RaylibRenderer : IRenderer {
         }
         
         Raylib.EndDrawing();
+    }
+    
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    public static unsafe void MyLogCallback(int logLevel, sbyte* msg, sbyte* args) {
+        TraceLogLevel level = (TraceLogLevel)logLevel;
+        
+        string text = Marshal.PtrToStringAnsi((IntPtr)msg)!;
+
+        ILogger logger = Engine.GetLogger<RaylibRenderer>();
+        
+        switch (level) {
+            case TraceLogLevel.All:
+                logger.LogError(text);
+                break;
+            
+            case TraceLogLevel.Info:  // Info is a bit spammy
+            case TraceLogLevel.Trace:
+                logger.LogTrace(text);
+                break;
+            
+            case TraceLogLevel.Debug:
+                logger.LogDebug(text);
+                break;
+            
+            case TraceLogLevel.Warning:
+                logger.LogWarning(text);
+                break;
+            
+            case TraceLogLevel.Error:
+                logger.LogError(text);
+                break;
+            
+            case TraceLogLevel.Fatal:
+                logger.LogCritical(text);
+                break;
+            
+            case TraceLogLevel.None:
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }

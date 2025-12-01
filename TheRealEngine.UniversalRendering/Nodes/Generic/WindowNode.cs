@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using TheRealEngine.Nodes;
 using TheRealEngine.UniversalRendering.Renderers;
 
@@ -9,11 +10,13 @@ public class WindowNode : NodeBase {
     public int Height { get; set; } = 1080/2;
     public string Title { get; set; }
 
-    public WindowNode() {
-        
+    public override void Ready() {
+        Renderer.Window = this;
+        Renderer.Init();
     }
 
     public override void Update(double delta) {
+        Engine.GetLogger<WindowNode>().LogTrace("Rendering WindowNode {Title}", Title);
         Renderer.Render(this);
     }
 }
