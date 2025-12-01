@@ -7,7 +7,20 @@
       "script": "TheRealEngine.UniversalRendering.Nodes.Generic.SpriteNode",
       "children": [],
       "params": {
-        "TexturePath": "Assets/thing.png"
+        "TexturePath": "Assets/thing.png",
+        "Position": [200,0],
+        "Scale": [0.5,1]
+      }
+    },
+    {
+      "name": "sometext",
+      "script": "TheRealEngine.UniversalRendering.Nodes.Generic.TextNode",
+      "children": [],
+      "params": {
+        "Text": "Hello There Gamers!!!!",
+        "Position": [200,200],
+        "FontSize": 48,
+        "FontColour": "#FF0000"
       }
     }
   ],

@@ -1,5 +1,7 @@
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using GlmSharp;
 using Microsoft.Extensions.Logging;
 using Raylib_cs;
 using TheRealEngine.Nodes;
@@ -9,6 +11,7 @@ namespace TheRealEngine.UniversalRendering.Renderers;
 
 public class RaylibRenderer : IRenderer {
     public WindowNode Window { get; set; }
+    private Dictionary<object, Texture2D> _loadedTextures = new();
 
     public void Init() {
         unsafe {
@@ -26,19 +29,60 @@ public class RaylibRenderer : IRenderer {
         }
         
         Raylib.BeginDrawing();
-        Raylib.ClearBackground(Color.White);
+        Raylib.ClearBackground(ToRaylibColor(Window.BackgroundColour));
         
         foreach (INode node in root.GetTreeEnumerator()) {
             switch (node) {
                 case SpriteNode sprite: {
-                    Texture2D texture = Raylib.LoadTexture(sprite.TexturePath);
-                    Raylib.DrawTexture(texture, (int)sprite.Transform.Position.x, (int)sprite.Transform.Position.y, Color.White);
+                    Texture2D texture = GetTexture(sprite);
+                    
+                    dvec2 position = sprite.Transform.Position;
+                    Rectangle destRectangle = new(
+                        (float)position.x,
+                        (float)position.y,
+                        (float)(texture.Width * sprite.Scale.x),
+                        (float)(texture.Height * sprite.Scale.y)
+                    );
+
+                    Rectangle sourceRectangle = new(
+                        0, 0,
+                        texture.Width, texture.Height
+                    );
+
+                    Vector2 origin = new(0, 0);
+
+                    Raylib.DrawTexturePro(
+                        texture,
+                        sourceRectangle,
+                        destRectangle,
+                        origin,
+                        (float)sprite.Rotation,
+                        Color.White
+                    );
+                    break;
+                }
+
+                case TextNode text: {
+                    Font font = Raylib.GetFontDefault();
+                    
+                    // Raylib.DrawTextPro(font, text.Text, text.);.DrawText(text.Text, (int)text.Position.x, (int)text.Position.y, 
+                    //     text.FontSize, ToRaylibColor(text.FontColour));
                     break;
                 }
             }
         }
         
         Raylib.EndDrawing();
+    }
+
+    private Texture2D GetTexture(SpriteNode sprite) {
+        if (_loadedTextures.ContainsKey(sprite.GetHashCode())) {
+            return _loadedTextures[sprite.GetHashCode()];
+        }
+        
+        Texture2D texture = Raylib.LoadTexture(sprite.TexturePath);
+        _loadedTextures[sprite.GetHashCode()] = texture;
+        return texture;
     }
     
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
@@ -81,5 +125,9 @@ public class RaylibRenderer : IRenderer {
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+    
+    private static Color ToRaylibColor(System.Drawing.Color color) {
+        return new Color(color.R, color.G, color.B, color.A);
     }
 }

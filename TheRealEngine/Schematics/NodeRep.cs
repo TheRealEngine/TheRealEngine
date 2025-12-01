@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using TheRealEngine.Nodes;
 
@@ -51,7 +52,11 @@ public class NodeRep {
                 continue;  // Ignore values used in constructor
             }
             
-            PropertyInfo prop = t.GetProperty(paramKp.Key)!;
+            PropertyInfo? prop = t.GetProperty(paramKp.Key);
+            if (prop == null) {
+                Engine.GetEngineLogger().LogWarning("Property '{prop}' not found on node type '{type}'", paramKp.Key, t.Name);
+                continue;
+            }
             object value = ConvertToken(paramKp.Value, prop.PropertyType);
             prop.SetValue(node, value);
         }
@@ -88,7 +93,14 @@ public class NodeRep {
         }
 
         // Standard conversion
-        return token.ToObject(targetType)!;
+        try {
+            return token.ToObject(targetType)!;
+        }
+        catch (Exception e) {
+            Engine.GetEngineLogger().LogError(e, "Failed to convert token '{token}' to type '{type}'", token.ToString(), targetType.Name);
+            object defaultValue = targetType.IsValueType ? Activator.CreateInstance(targetType)! : null!;
+            return defaultValue;
+        }
     }
 
     private Type GetNodeType() {

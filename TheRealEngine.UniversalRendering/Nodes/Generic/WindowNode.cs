@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.Extensions.Logging;
 using TheRealEngine.Nodes;
 using TheRealEngine.UniversalRendering.Renderers;
@@ -9,6 +10,7 @@ public class WindowNode : NodeBase {
     public int Width { get; set; } = 1920/2;
     public int Height { get; set; } = 1080/2;
     public string Title { get; set; }
+    public Color BackgroundColour { get; set; } = Color.Transparent;
 
     public override void Ready() {
         Renderer.Window = this;
