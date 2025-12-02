@@ -13,6 +13,7 @@ public class WindowNode : NodeBase {
     public int Height { get; set; } = 1080/2;
     public string Title { get; set; } = "Window";
     public Color BackgroundColour { get; set; } = Color.Transparent;
+    public bool QuitOnClose { get; set; } = true;
     
     /// <summary>
     /// True if the window is currently executing a Tick().

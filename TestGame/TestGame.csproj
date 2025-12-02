@@ -9,6 +9,9 @@
     <ItemGroup>
       <ProjectReference Include="..\KrysRendering\KrysRendering.csproj" />
       <ProjectReference Include="..\TheRealEngine.RenderApi\TheRealEngine.RenderApi.csproj" />
+      <ProjectReference Include="..\TheRealEngine.UniversalRendering.Console\TheRealEngine.UniversalRendering.Console.csproj" />
+      <ProjectReference Include="..\TheRealEngine.UniversalRendering.OpenGl\TheRealEngine.UniversalRendering.OpenGl.csproj" />
+      <ProjectReference Include="..\TheRealEngine.UniversalRendering.Raylib\TheRealEngine.UniversalRendering.Raylib.csproj" />
       <ProjectReference Include="..\TheRealEngine.UniversalRendering\TheRealEngine.UniversalRendering.csproj" />
       <ProjectReference Include="..\TheRealEngine\TheRealEngine.csproj" />
     </ItemGroup>

@@ -5,6 +5,6 @@
   "params": {
     "TexturePath": "thing.png",
     "Position": [200,0],
-    "Scale": [0.5,1]
+    "Scale": [50,50]
   }
 }

@@ -6,7 +6,8 @@ using TheRealEngine.UniversalRendering.Nodes.Generic;
 namespace TheRealEngine.UniversalRendering;
 
 public interface IWindowBackend {
-    WindowNode Window { get; internal set; }
+    // setter is internal (but can't be because external lib)
+    WindowNode Window { get; set; }
     
     // rendering
     void Render(INode node);

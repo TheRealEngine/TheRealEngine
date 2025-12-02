@@ -8,7 +8,7 @@ using TheRealEngine.Nodes;
 using TheRealEngine.UniversalRendering.Input;
 using TheRealEngine.UniversalRendering.Nodes.Generic;
 
-namespace TheRealEngine.UniversalRendering.Renderers;
+namespace TheRealEngine.UniversalRendering.Raylib;
 
 public class RaylibWindowBackend : IWindowBackend {
     public WindowNode Window { get; set; }
@@ -23,16 +23,16 @@ public class RaylibWindowBackend : IWindowBackend {
     public void Init() {
         unsafe {
             delegate* unmanaged[Cdecl]<int, sbyte*, sbyte*, void> ptr = &MyLogCallback;
-            Raylib.SetTraceLogCallback(ptr);
+            Raylib_cs.Raylib.SetTraceLogCallback(ptr);
         }
-        Raylib.InitWindow(Window.Width, Window.Height, Window.Title);
+        Raylib_cs.Raylib.InitWindow(Window.Width, Window.Height, Window.Title);
     }
 
     public void Stop() {
         foreach (Texture2D texture in _loadedTextures.Values) {
-            Raylib.UnloadTexture(texture);
+            Raylib_cs.Raylib.UnloadTexture(texture);
         }
-        Raylib.CloseWindow();
+        Raylib_cs.Raylib.CloseWindow();
     }
 
     public void Update(double dt) {
@@ -45,14 +45,14 @@ public class RaylibWindowBackend : IWindowBackend {
     }
 
     public void Render(INode root) {
-        if (Raylib.WindowShouldClose()) {
+        if (Raylib_cs.Raylib.WindowShouldClose()) {
             // close window
-            Raylib.CloseWindow();
+            Raylib_cs.Raylib.CloseWindow();
             Environment.Exit(0);
         }
         
-        Raylib.BeginDrawing();
-        Raylib.ClearBackground(ToRaylibColor(Window.BackgroundColour));
+        Raylib_cs.Raylib.BeginDrawing();
+        Raylib_cs.Raylib.ClearBackground(ToRaylibColor(Window.BackgroundColour));
         
         foreach (INode node in root.GetTreeEnumerator()) {
             switch (node) {
@@ -72,7 +72,7 @@ public class RaylibWindowBackend : IWindowBackend {
                         texture.Width, texture.Height
                     );
 
-                    Raylib.DrawTexturePro(
+                    Raylib_cs.Raylib.DrawTexturePro(
                         texture,
                         sourceRectangle,
                         destRectangle,
@@ -84,9 +84,9 @@ public class RaylibWindowBackend : IWindowBackend {
                 }
 
                 case TextNode text: {
-                    Font font = Raylib.GetFontDefault();
+                    Font font = Raylib_cs.Raylib.GetFontDefault();
                     
-                    Raylib.DrawTextPro(font, text.Text, new Vector2((float)text.Position.x, (float)text.Position.y), 
+                    Raylib_cs.Raylib.DrawTextPro(font, text.Text, new Vector2((float)text.Position.x, (float)text.Position.y), 
                         Vector2.Zero, (float)glm.Degrees(text.Transform.Rotation), text.FontSize, text.FontSpacing, 
                         ToRaylibColor(text.FontColour));
                     break;
@@ -94,15 +94,15 @@ public class RaylibWindowBackend : IWindowBackend {
             }
         }
         
-        Raylib.EndDrawing();
+        Raylib_cs.Raylib.EndDrawing();
     }
 
     public bool IsButtonPressed(KeyboardButton button) {
-        return Raylib.IsKeyDown(KeyboardButtonToRaylibKey(button));
+        return Raylib_cs.Raylib.IsKeyDown(KeyboardButtonToRaylibKey(button));
     }
 
     public bool IsButtonJustPressedThisUpdate(KeyboardButton button) {
-        return Raylib.IsKeyPressed(KeyboardButtonToRaylibKey(button));
+        return Raylib_cs.Raylib.IsKeyPressed(KeyboardButtonToRaylibKey(button));
     }
 
     public bool IsButtonJustPressedThisTick(KeyboardButton button) {
@@ -110,7 +110,7 @@ public class RaylibWindowBackend : IWindowBackend {
     }
 
     public dvec2 GetMousePosition() {
-        Vector2 pos = Raylib.GetMousePosition();
+        Vector2 pos = Raylib_cs.Raylib.GetMousePosition();
         return new dvec2(pos.X, pos.Y);
     }
 
@@ -119,7 +119,7 @@ public class RaylibWindowBackend : IWindowBackend {
             return _loadedTextures[sprite.GetHashCode()];
         }
         
-        Texture2D texture = Raylib.LoadTexture(sprite.TexturePath);
+        Texture2D texture = Raylib_cs.Raylib.LoadTexture(sprite.TexturePath);
         _loadedTextures[sprite.GetHashCode()] = texture;
         return texture;
     }

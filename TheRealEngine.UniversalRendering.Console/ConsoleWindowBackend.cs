@@ -5,7 +5,7 @@ using TheRealEngine.UniversalRendering.Input;
 using TheRealEngine.UniversalRendering.Nodes.Console;
 using TheRealEngine.UniversalRendering.Nodes.Generic;
 
-namespace TheRealEngine.UniversalRendering.Renderers;
+namespace TheRealEngine.UniversalRendering.Console;
 
 public class ConsoleWindowBackend : IWindowBackend {
     public WindowNode Window { get; set; }
@@ -28,8 +28,8 @@ public class ConsoleWindowBackend : IWindowBackend {
     public void Init() {
         // Apply width and height to console window
         try {
-            Console.SetWindowSize(Window.Width, Window.Height);
-            Console.SetBufferSize(Window.Width, Window.Height);
+            System.Console.SetWindowSize(Window.Width, Window.Height);
+            System.Console.SetBufferSize(Window.Width, Window.Height);
         }
         catch (ArgumentOutOfRangeException) {
             // Ignore if the size is outside the console's capabilities
@@ -39,12 +39,12 @@ public class ConsoleWindowBackend : IWindowBackend {
             // Ignore if not supported (e.g., on some OSes)
             Engine.GetLogger<ConsoleWindowBackend>().LogInformation("Console window resizing not supported on this platform.");
             
-            Window.Height = Console.WindowHeight;
-            Window.Width = Console.WindowWidth;
+            Window.Height = System.Console.WindowHeight;
+            Window.Width = System.Console.WindowWidth;
         }
         
         try {
-            Console.SetBufferSize(Window.Width, Window.Height);
+            System.Console.SetBufferSize(Window.Width, Window.Height);
         }
         catch (PlatformNotSupportedException) {
             // Ignore if not supported (e.g., on some OSes)
@@ -54,8 +54,8 @@ public class ConsoleWindowBackend : IWindowBackend {
 
     private void InputPollingLoop() {
         while (true) {
-            if (Console.KeyAvailable) {
-                ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+            if (System.Console.KeyAvailable) {
+                ConsoleKeyInfo keyInfo = System.Console.ReadKey(intercept: true);
                 KeyboardButton btn = ConsoleKeyToKeyboardButton(keyInfo.Key);
                 if (btn == KeyboardButton.None) {
                     continue;
@@ -92,8 +92,8 @@ public class ConsoleWindowBackend : IWindowBackend {
 
                 // Set cursor position
                 try {
-                    Console.SetCursorPosition(sp.x, sp.y);
-                    Console.Write(charNode.Character);
+                    System.Console.SetCursorPosition(sp.x, sp.y);
+                    System.Console.Write(charNode.Character);
                 }
                 catch (ArgumentOutOfRangeException) {
                     // Ignore if outside the buffer
@@ -105,8 +105,8 @@ public class ConsoleWindowBackend : IWindowBackend {
 
                 // Set cursor position
                 try {
-                    Console.SetCursorPosition(sp.x, sp.y);
-                    Console.Write(textNode.Text);
+                    System.Console.SetCursorPosition(sp.x, sp.y);
+                    System.Console.Write(textNode.Text);
                 }
                 catch (ArgumentOutOfRangeException) {
                     // Ignore if outside the buffer
@@ -115,7 +115,7 @@ public class ConsoleWindowBackend : IWindowBackend {
         }
 
         // Move cursor to next line to avoid overwrite
-        Console.SetCursorPosition(0, Console.CursorTop + 1);
+        System.Console.SetCursorPosition(0, System.Console.CursorTop + 1);
     }
 
     /// <summary>

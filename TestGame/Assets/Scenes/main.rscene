@@ -20,6 +20,6 @@
     }
   ],
   "params": {
-    "WindowBackend": "new::TheRealEngine.UniversalRendering.Renderers.ConsoleWindowBackend"
+    "WindowBackend": "new::TheRealEngine.UniversalRendering.Console.ConsoleWindowBackend"
   }
 }
