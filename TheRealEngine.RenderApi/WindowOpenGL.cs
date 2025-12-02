@@ -31,7 +31,7 @@ public class WindowOpenGL : NodeBase {
         _window.Initialize();
 
         _gl = GL.GetApi(_window);
-        _ctx = new RenderContext2D(_gl);
+        _ctx = new RenderContext2D(_gl, _window);
 
         _input = _window.CreateInput();
         foreach (IKeyboard keyboard in _input.Keyboards) {

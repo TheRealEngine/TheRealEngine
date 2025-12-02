@@ -1,5 +1,6 @@
 using System.Numerics;
 using Silk.NET.OpenGL;
+using Silk.NET.Windowing;
 using StbImageSharp;
 
 namespace TheRealEngine.RenderApi;
@@ -11,14 +12,18 @@ public readonly struct TextureHandle {
 
 public sealed class RenderContext2D {
     public GL Gl { get; }
+    
+    public Matrix4x4 Projection;
 
     private readonly uint _vao;
     private readonly uint _vbo;
     private readonly uint _ebo;
     private readonly uint _shader;
     
-    public RenderContext2D(GL gl) {
+    public RenderContext2D(GL gl, IWindow window) {
         Gl = gl;
+        
+        Projection = Matrix4x4.CreateOrthographicOffCenter(0, window.Size.X, 0, window.Size.Y, -1f, 1f);
         
         float[] vertices = {
             0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
@@ -37,7 +42,6 @@ public sealed class RenderContext2D {
         _ebo = gl.GenBuffer();
 
         gl.BindVertexArray(_vao);
-        // Gl.PolygonMode(GLEnum.FrontAndBack, GLEnum.Line);
 
         gl.BindBuffer(GLEnum.ArrayBuffer, _vbo);
         unsafe {
@@ -104,9 +108,12 @@ public sealed class RenderContext2D {
         
         int modelLoc = gl.GetUniformLocation(_shader, "uModel");
         unsafe {
-            fixed (float* m = &model.M11) {
-                gl.UniformMatrix4(modelLoc, 1, false, m);
-            }
+            fixed (float* m = &model.M11) { gl.UniformMatrix4(modelLoc, 1, false, m); }
+        }
+        
+        int projLoc = gl.GetUniformLocation(_shader, "uProjection");
+        unsafe {
+            fixed (float* p = &Projection.M11) { gl.UniformMatrix4(projLoc, 1, false, p); }
         }
 
         int texLoc = gl.GetUniformLocation(_shader, "uTexture");
@@ -131,12 +138,13 @@ public sealed class RenderContext2D {
         layout (location = 1) in vec2 aTextureCoord;
 
         uniform mat4 uModel;
+        uniform mat4 uProjection;
 
         out vec2 frag_texCoords;
 
         void main()
         {
-            gl_Position = uModel * vec4(aPosition, 1.0);
+            gl_Position = uProjection * uModel * vec4(aPosition, 1.0);
             frag_texCoords = aTextureCoord;
         }";
 
