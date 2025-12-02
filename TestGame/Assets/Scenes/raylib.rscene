@@ -19,7 +19,7 @@
     }
   ],
   "params": {
-    "Renderer": "new::TheRealEngine.UniversalRendering.Renderers.RaylibRenderer",
+    "WindowBackend": "new::TheRealEngine.UniversalRendering.Renderers.RaylibWindowBackend",
     "Title": "Test Game Yay!"
   }
 }

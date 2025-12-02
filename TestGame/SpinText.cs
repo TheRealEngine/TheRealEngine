@@ -1,4 +1,7 @@
+using Microsoft.Extensions.Logging;
 using TheRealEngine;
+using TheRealEngine.UniversalRendering;
+using TheRealEngine.UniversalRendering.Input;
 using TheRealEngine.UniversalRendering.Nodes.Generic;
 
 namespace TestGame;
@@ -10,8 +13,12 @@ public class SpinText : TextNode {
         Rotation += RotationSpeed * delta * 2.0 * Math.PI;
 
         if (Rotation > Math.PI * 10) {
-            Engine.Quit();
+            // Engine.Quit();
             // Game.ChangeScene("krygame");
+        }
+
+        if (this.GetWindow()!.IsButtonJustPressed(KeyboardButton.A)) {
+            Engine.GetLogger().LogInformation("A button was just pressed!");
         }
     }
 }

@@ -2,7 +2,7 @@
   "name": "Test Game Yay!",
   "version": "1.0.0",
   "description": "a cool game",
-  "default_scene": "raylib",
+  "default_scene": "main",
   "tps": 60,
   "log_level": "info"
 }

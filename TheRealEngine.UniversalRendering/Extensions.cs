@@ -18,4 +18,8 @@ public static class Extensions {
             }
         }
     }
+    
+    public static IWindowBackend? GetWindowBackend(this INode node) {
+        return node.GetWindow()?.WindowBackend;
+    }
 }

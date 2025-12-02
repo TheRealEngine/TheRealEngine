@@ -3,6 +3,14 @@
   "name": "Game World",
   "children": [
     {
+      "name": "texttest",
+      "script": "TheRealEngine.UniversalRendering.Nodes.Generic.TextNode",
+      "params": {
+        "Text": "Hello Console!",
+        "Position": [10,10]
+      }
+    },
+    {
       "name": "snek",
       "script": "TestGame.Snek",
       "children": [],
@@ -12,6 +20,6 @@
     }
   ],
   "params": {
-    "Renderer": "new::TheRealEngine.UniversalRendering.Renderers.ConsoleRenderer"
+    "WindowBackend": "new::TheRealEngine.UniversalRendering.Renderers.ConsoleWindowBackend"
   }
 }
